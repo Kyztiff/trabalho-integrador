@@ -1,6 +1,8 @@
 // index.js servidor Express mínimo
 const express = require('express');
 const ambienteRoutes = require('./routes/ambienteRoutes');
+const corRoutes = require('./routes/corRoutes');
+const usuarioRoutes = require('./routes/usuarioRoutes');
 // Cria a instância da aplicação Express
 const app = express();
 // Define a porta usa variável de ambiente ou 3000 como fallback
@@ -9,6 +11,8 @@ const PORTA = process.env.PORT || 3001;
 // Sem isso, req.body será undefined em rotas POST/PUT/PATCH
 app.use(express.json());
 app.use('/api/ambiente', ambienteRoutes);
+app.use('/api/cor', corRoutes);
+app.use('/api/usuario', usuarioRoutes);
 // Rota de teste responde a GET /
 app.get('/', (req, res) => {
 res.json({
