@@ -15,11 +15,11 @@ function listarTodos(filtros = {}) {
 }
 
 function buscarPorId(id) { 
-    return statusOrcamentos.find(u => u.id === id) || null; 
+    return statusOrcamentos.find(s => s.id === id) || null; 
 }
 
 function criar(dados) {
-    if (!dados.nome || !dados.CPF || !dados.email || !dados.senha || !dados.tipo)
+    if (!dados.nome || !dados.cor)
         throw new Error('Campos obrigatórios ausentes');
 
     const novostatusOrcamento = { id: proximoId++, ...dados };
@@ -28,7 +28,7 @@ function criar(dados) {
 }
 
 function atualizar(id, dados) {
-    const idx = statusOrcamentos.findIndex(u => u.id === id);
+    const idx = statusOrcamentos.findIndex(s => s.id === id);
     if (idx === -1) return null;
 
     statusOrcamentos[idx] = { ...statusOrcamentos[idx], ...dados, id };
@@ -36,7 +36,7 @@ function atualizar(id, dados) {
 }
 
 function remover(id) {
-    const idx = statusOrcamentos.findIndex(u => u.id === id);
+    const idx = statusOrcamentos.findIndex(s => s.id === id);
     if (idx === -1) return false;
 
     statusOrcamentos.splice(idx, 1);

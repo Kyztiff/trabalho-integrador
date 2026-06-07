@@ -1,4 +1,24 @@
-// routes/alunos.js
+// routes/orcamentoRoutes.js
+// As rotas apenas fazem o mapeamento URL Controller.
+// Nenhuma lógica aqui.const express = require('express');
+
+const express = require('express');
+const router = express.Router();
+
+const orcamentoController = require('../controllers/orcamentoController');
+router.get('/', orcamentoController.listar);
+router.get('/:id', orcamentoController.buscar);
+router.post('/', orcamentoController.criar);
+router.put('/:id', orcamentoController.atualizar);
+router.patch('/:id', orcamentoController.atualizar);
+router.delete('/:id', orcamentoController.remover);
+
+module.exports = router;
+
+
+
+
+/*/ routes/alunos.js
 const express = require('express');
 const router = express.Router();
 // Banco de dados em memória (substituir por banco real depois)
@@ -16,7 +36,7 @@ let proximoId = 4;
         : alunos;
     res.status(200).json({ total: resultado.length, alunos: resultado });
 });
-*/
+
 router.get('/', (req, res) => {
     res.status(200).json({
         total: orcamentos.length,
@@ -98,3 +118,5 @@ router.delete('/:id', (req, res) => {
 
 
 module.exports = router;
+
+*/
