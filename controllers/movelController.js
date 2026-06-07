@@ -6,7 +6,10 @@ const movelModel = require('../models/movelModel');
 
 function listar(req, res) {
     const moveis = movelModel.listarTodos();
-    res.status(200).json({ total: moveis.length, moveis });
+    res.status(200).json({ 
+        total: moveis.length, 
+        moveis 
+    });
 }
 function buscar(req, res) {
     const id = parseInt(req.params.id);
