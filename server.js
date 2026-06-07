@@ -4,6 +4,9 @@ const ambienteRoutes = require('./routes/ambienteRoutes');
 const corRoutes = require('./routes/corRoutes');
 const usuarioRoutes = require('./routes/usuarioRoutes');
 const movelRoutes = require('./routes/movelRoutes');
+const statusOrcamentoRoutes = require('./routes/statusOrcamentoRoutes');
+const OrcamentoRoutes = require('./routes/OrcamentoRoutes');
+
 // Cria a instância da aplicação Express
 const app = express();
 // Define a porta usa variável de ambiente ou 3000 como fallback
@@ -15,6 +18,9 @@ app.use('/api/ambiente', ambienteRoutes);
 app.use('/api/cor', corRoutes);
 app.use('/api/usuario', usuarioRoutes);
 app.use('/api/movel', movelRoutes);
+app.use('/api/statusOrcamento', statusOrcamentoRoutes);
+app.use('/api/Orcamento', OrcamentoRoutes);
+
 // Rota de teste responde a GET /
 app.get('/', (req, res) => {
 res.json({
