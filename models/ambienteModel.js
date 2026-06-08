@@ -19,7 +19,13 @@ let proximoId = 4;
 
     function criar(dados) {
         if (!dados.nome)
-            throw new Error('Campos obrigatórios ausentes');
+            throw new Error('Nome é obrigatório');
+        const existe = ambientes.find(
+            a => a.nome.toLowerCase() === dados.nome.toLowerCase()
+        );
+
+        if (existe)
+            throw new Error('Já existe um ambiente com esse nome');
 
         const novoAmbiente = { id: proximoId++, ...dados };
         ambientes.push(novoAmbiente);

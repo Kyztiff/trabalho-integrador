@@ -19,8 +19,19 @@ function buscarPorId(id) {
 }
 
 function criar(dados) {
-    if (!dados.nome || !dados.fabricante || !dados.valor_chapa || !dados.foto)
-        throw new Error('Campos obrigatórios ausentes');
+    if (!dados.nome)
+        throw new Error('Nome é um campo obrigatório');
+
+    if (!dados.fabricante)
+        throw new Error('fabricante é um campo obrigatório');
+
+    if (!dados.valor_chapa)
+        throw new Error('Valor da chapa é um campo obrigatório');
+
+    if (dados.valor_chapa <= 0)
+        throw new Error(
+            'Valor da chapa deve ser maior que zero'
+    );
 
     const novaCor = { id: proximoId++, ...dados };
     cores.push(novaCor);
