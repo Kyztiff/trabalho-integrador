@@ -17,6 +17,10 @@ function buscarPorId(id) {
     return usuarios.find(u => u.id === id) || null; 
 }
 
+function buscarPorEmail(email) {
+    return usuarios.find(u => u.email === email) || null;
+}
+
 function criar(dados) {
     if (!dados.nome || !dados.CPF || !dados.email || !dados.senha || !dados.tipo)
         throw new Error('Campos obrigatórios ausentes');
@@ -42,4 +46,4 @@ function remover(id) {
     return true;
 }
 
-module.exports = { listarTodos, buscarPorId, criar, atualizar, remover };
+module.exports = { listarTodos, buscarPorId, buscarPorEmail, criar, atualizar, remover };
