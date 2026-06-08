@@ -7,6 +7,8 @@ const movelRoutes = require('./routes/movelRoutes');
 const statusOrcamentoRoutes = require('./routes/statusOrcamentoRoutes');
 const OrcamentoRoutes = require('./routes/OrcamentoRoutes');
 const itemRoutes = require('./routes/itemRoutes');
+const dashboardRoutes = require('./routes/dashboardRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 // Cria a instância da aplicação Express
 const app = express();
@@ -22,6 +24,8 @@ app.use('/api/movel', movelRoutes);
 app.use('/api/statusOrcamento', statusOrcamentoRoutes);
 app.use('/api/Orcamento', OrcamentoRoutes);
 app.use('/api/item', itemRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/auth', authRoutes);
 
 // Rota de teste responde a GET /
 app.get('/', (req, res) => {
