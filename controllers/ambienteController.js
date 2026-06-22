@@ -11,9 +11,15 @@ function listar(req, res) {
 
 function buscar(req, res) {
     const id = parseInt(req.params.id);
-    if (isNaN(id)) return res.status(400).json({ erro: 'ID inválido' });
+
+    if (isNaN(id)) 
+        return res.status(400).json({ erro: 'ID inválido' });
+
     const ambiente = ambienteModel.buscarPorId(id);
-    if (!ambiente) return res.status(404).json({ erro: 'Ambiente não encontrado' });
+    
+    if (!ambiente) 
+        return res.status(404).json({ erro: 'Ambiente não encontrado' });
+    
     res.status(200).json(ambiente);
 }
 
@@ -28,14 +34,35 @@ function criar(req, res) {
 }
 
 function atualizar(req, res) {
-    const ambiente = ambienteModel.atualizar(parseInt(req.params.id), req.body);
-    if (!ambiente) return res.status(404).json({ erro: 'Ambiente não encontrado' });
-    res.status(200).json(ambiente);
-}
+    const id = parseInt(req.params.id);
 
+    if (isNaN(id)) 
+        return res.status(400).json({ erro: 'ID inválido' });
+
+    try{
+        const ambiente = ambienteModel.atualizar(id, req.body);
+    
+        if (!ambiente) 
+            return res.status(404).json({ erro: 'Ambiente não encontrado' });
+        
+        res.status(200).json(ambiente);
+
+    }
+    catch(err){
+        res.status(400).json({erro: err.message});
+    }
+}
 function remover(req, res) {
-    const ok = ambienteModel.remover(parseInt(req.params.id));
-    if (!ok) return res.status(404).json({ erro: 'Ambiente não encontrado' });
+    const id = parseInt(req.params.id);
+
+    if (isNaN(id)) 
+        return res.status(400).json({ erro: 'ID inválido' });
+
+    const ok = ambienteModel.remover(id);
+
+    if (!ok) 
+        return res.status(404).json({ erro: 'Ambiente não encontrado' });
+    
     res.status(204).send();
 }
 
