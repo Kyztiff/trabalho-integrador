@@ -7,10 +7,7 @@ const movelRoutes = require('./routes/movelRoutes');
 const statusOrcamentoRoutes = require('./routes/statusOrcamentoRoutes');
 const OrcamentoRoutes = require('./routes/OrcamentoRoutes');
 const itemRoutes = require('./routes/itemRoutes');
-<<<<<<< HEAD
-=======
 const dashboardRoutes = require('./routes/dashboardRoutes');
->>>>>>> c8a51ae95d5036078c02994da8b580f559973631
 const authRoutes = require('./routes/authRoutes');
 
 // Cria a instância da aplicação Express
