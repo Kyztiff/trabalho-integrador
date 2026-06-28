@@ -3,13 +3,7 @@
 // O Controller nunca acessa o banco diretamente.
 
 // -------------------------DADOS---------------------------------
-let ambientes = [
-    { id: 1, nome: "Cozinha"},
-    { id: 2, nome: "Sala" },
-    { id: 3, nome: "Quarto"},
-];
-
-let proximoId = 4;
+const db = require('../config/database');
 
 // Regra de negócio centralizada aqui (DRY!)
 // ---------------------VALIDADORES---------------------------------
@@ -32,63 +26,102 @@ function validarNome(nome) {
 }
 // ---------------------HELPERS---------------------------------
 
-function encontrarPorNome(nome, ignorarId = null) {
-    return ambientes.find(a =>
-        a.nome.toLowerCase() === nome.toLowerCase() &&
-        a.id !== ignorarId
+async function encontrarPorNome(nome, ignorarId = null) {
+    return await db.oneOrNone(
+        `
+        SELECT *
+        FROM ambiente
+        WHERE nome ILIKE $1
+        AND ($2 IS NULL OR id_ambiente <> $2)
+        `,
+        [nome, ignorarId]
     );
 }
 
 // ---------------------CRUD---------------------------------
 
-    function listarTodos(filtros = {}) {
-        return [...ambientes];
-    };
+async function listarTodos(filtros = {}) {
+    return await db.any(
+        `
+        SELECT
+            id_ambiente,
+            nome
+        FROM ambiente
+        ORDER BY id_ambiente
+        `
+    );
+}
 
-    function buscarPorId(id) { 
-        return ambientes.find(a => a.id === id) || null; 
-    }
+async function buscarPorId(id) { 
+    return await db.oneOrNone(
+        `
+        SELECT *
+        FROM ambiente
+        WHERE id_ambiente = $1
+        `,
+        [id]
+    );
+}
 
-    function criar(dados) {
+async function criar(dados) {
 
-        const nome = validarNome(dados.nome);   
+    const nome = validarNome(dados.nome);   
         
-        if (encontrarPorNome(nome))
-            throw new Error('Já existe um ambiente com esse nome');
+    if (await encontrarPorNome(nome))
+        throw new Error('Já existe um ambiente com esse nome');
 
-        const novoAmbiente = { id: proximoId++, nome };
-        ambientes.push(novoAmbiente);
-        return novoAmbiente;
-    }
+     return await db.one(
+        `
+        INSERT INTO ambiente (nome)
+        VALUES ($1)
+        RETURNING *;
+        `,
+        [nome]
+    );
+}
 
-    function atualizar(id, dados) {
+async function atualizar(id, dados) {
 
-        const idx = ambientes.findIndex(a => a.id === id);
-        if (idx === -1) return null;
+    const ambiente = await buscarPorId(id);
 
-        if (dados.nome !== undefined) {
-            const nome = validarNome(dados.nome);
+    if (!ambiente) 
+        return null;
 
-            if (encontrarPorNome(nome, id))
-                throw new Error('Já existe um ambiente com esse nome');
+    if(dados.nome === undefined)
+        throw new Error('Nenhum dado informado para atualização');
+        
 
-            dados.nome = nome;
-        }
+    const nome = validarNome(dados.nome);
 
-        ambientes[idx] = { 
-            ...ambientes[idx], 
-            ...dados, id };
+    if (await encontrarPorNome(nome, id))
+        throw new Error('Já existe um ambiente com esse nome');
 
-        return ambientes[idx];
-    }
+    return await db.one(
+        `
+        UPDATE ambiente
+        SET nome = $1
+        WHERE id_ambiente = $2
+        RETURNING *;
+        `,
+        [nome, id]
+        );
+}
 
-    function remover(id) {
+async function remover(id) {
 
-        const idx = ambientes.findIndex(a => a.id === id);
-        if (idx === -1) return false;
+    const ambiente = await buscarPorId(id);
+    
+    if (!ambiente) 
+        return false;
 
-        ambientes.splice(idx, 1);
-        return true;
-    }
+    await db.none(
+        `
+        DELETE FROM ambiente
+        WHERE id_ambiente = $1
+        `,
+        [id]
+    );
+    return true;
+}
 
 module.exports = { listarTodos, buscarPorId, criar, atualizar, remover };
