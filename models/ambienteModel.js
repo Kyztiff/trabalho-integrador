@@ -19,6 +19,9 @@ function validarNome(nome) {
     if (nomeTratado.length === 0)
         throw new Error('Nome é obrigatório');
 
+    if (nomeTratado.length < 3)
+        throw new Error('Nome deve ter pelo menos 3 caracteres');
+
     if (nomeTratado.length > 50)
         throw new Error('Nome deve ter no máximo 50 caracteres');
 

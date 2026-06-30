@@ -480,3 +480,5 @@ ALTER TABLE ONLY public.orcamento
 
 \unrestrict eshWcF6QVg5hoSJkKYlA2IgZDz4lVUtSnsmPvgHzGKUoRnGBZCUDX6a08YxamU2
 
+ALTER TABLE movel
+DROP COLUMN foto;
